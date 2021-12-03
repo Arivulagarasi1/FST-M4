@@ -1,0 +1,183 @@
+root@f57be2ff288d:/# vim episodeIV_dialogues.txt
+root@f57be2ff288d:/# vim episodeIV_dialouges.txt
+root@f57be2ff288d:/# vim episodeV_dialouges.txt
+root@f57be2ff288d:/# vim episodeVI_dialouges.txt
+root@f57be2ff288d:/# hdfs dfs -mkdir /user/root/inputs
+root@f57be2ff288d:/# hdfs dfs -put ./episodeIV_dialouges.txt /user/root/inputs
+root@f57be2ff288d:/# hdfs dfs -put ./episodeV_dialouges.txt /user/root/inputs
+root@f57be2ff288d:/# hdfs dfs -put ./episodeVI_dialouges.txt /user/root/inputs
+root@f57be2ff288d:/# hdfs dfs -ls /user/root/inputs
+Found 3 items
+-rw-r--r--   1 root supergroup      67671 2021-12-03 03:27 /user/root/inputs/episodeIV_dialouges.txt
+-rw-r--r--   1 root supergroup      43658 2021-12-03 03:27 /user/root/inputs/episodeVI_dialouges.txt
+-rw-r--r--   1 root supergroup      49891 2021-12-03 03:27 /user/root/inputs/episodeV_dialouges.txt
+root@f57be2ff288d:/# vim episodeIV.pig
+
+-- Load input file from HDFS
+inputDialouges = LOAD 'hdfs:///user/root/inputs/episodeIV_dialouges.txt' USING PigStorage('\t') AS (name:chararray, line:chararray);
+ranked = RANK inputDialouges;
+onlyDialouges = FILTER ranked BY (rank_inputDialouges > 2);
+groupByName = GROUP onlyDialouges BY name;
+names = FOREACH groupByName GENERATE $0 as name, COUNT($1) as no_of_lines;
+namesOrdered = ORDER names BY no_of_lines DESC;
+STORE namesOrdered INTO 'hdfs:///user/root/outputs/episodeIVoutput' USING PigStorage('\t');
+
+root@f57be2ff288d:/# vim episodeV.pig
+
+-- Load input file from HDFS
+inputDialouges = LOAD 'hdfs:///user/root/inputs/episodeV_dialouges.txt' USING PigStorage('\t') AS (name:chararray, line:chararray);
+ranked = RANK inputDialouges;
+onlyDialouges = FILTER ranked BY (rank_inputDialouges > 2);
+groupByName = GROUP onlyDialouges BY name;
+names = FOREACH groupByName GENERATE $0 as name, COUNT($1) as no_of_lines;
+namesOrdered = ORDER names BY no_of_lines DESC;
+STORE namesOrdered INTO 'hdfs:///user/root/outputs/episodeVoutput' USING PigStorage('\t');
+
+root@f57be2ff288d:/# vim episodeVI.pig
+
+-- Load input file from HDFS
+inputDialouges = LOAD 'hdfs:///user/root/inputs/episodeVI_dialouges.txt' USING PigStorage('\t') AS (name:chararray, line:chararray);
+ranked = RANK inputDialouges;
+onlyDialouges = FILTER ranked BY (rank_inputDialouges > 2);
+groupByName = GROUP onlyDialouges BY name;
+names = FOREACH groupByName GENERATE $0 as name, COUNT($1) as no_of_lines;
+namesOrdered = ORDER names BY no_of_lines DESC;
+STORE namesOrdered INTO 'hdfs:///user/root/outputs/episodeVIoutput' USING PigStorage('\t');
+
+
+root@f57be2ff288d:/# pig episodeIV.pig
+2021-12-03 05:30:20,862 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+2021-12-03 05:30:20,864 INFO pig.ExecTypeProvider: Trying ExecType : MAPREDUCE
+2021-12-03 05:30:20,865 INFO pig.ExecTypeProvider: Picked MAPREDUCE as the ExecType
+2021-12-03 05:30:20,927 [main] INFO  org.apache.pig.Main - Apache Pig version 0.17.0 (r1797386) compiled Jun 02 2017, 15:41:58
+2021-12-03 05:30:20,927 [main] INFO  org.apache.pig.Main - Logging error messages to: //pig_1638509420922.log
+2021-12-03 05:30:21,158 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /root/.pigbootup not found
+2021-12-03 05:30:21,204 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2021-12-03 05:30:21,204 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://f57be2ff288d:9000
+2021-12-03 05:30:21,590 [main] INFO  org.apache.pig.PigServer - Pig Script ID for the session: PIG-episodeIV.pig-3dc31e15-6a4e-4c82-8c3d-e8ae94a237fd
+2021-12-03 05:30:21,590 [main] WARN  org.apache.pig.PigServer - ATS is disabled since yarn.timeline-service.enabled set to false
+2021-12-03 05:30:22,199 [main] WARN  org.apache.pig.newplan.BaseOperatorPlan - Encountered Warning IMPLICIT_CAST_TO_LONG 1 time(s).
+2021-12-03 05:30:22,206 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2021-12-03 05:30:22,225 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: GROUP_BY,ORDER_BY,RANK,FILTER
+2021-12-03 05:30:22,262 [main] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
+2021-12-03 05:30:22,317 [main] INFO  org.apache.pig.newplan.logical.optimizer.LogicalPlanOptimizer - {RULES_ENABLED=[AddForEach, ColumnMapKeyPrune, ConstantCalculator, GroupByConstParallelSetter, LimitOptimizer, LoadTypeCastInserter, MergeFilter, MergeForEach, NestedLimitOptimizer, PartitionFilterOptimizer, PredicatePushdownOptimizer, PushDownForEachFlatten, PushUpFilter, SplitFilter, StreamTypeCastInserter]}
+2021-12-03 05:30:22,354 [main] INFO  org.apache.pig.impl.util.SpillableMemoryManager - Selected heap (PS Old Gen) of size 699400192 to monitor. collectionUsageThreshold = 489580128, usageThreshold = 489580128
+2021-12-03 05:30:22,518 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2021-12-03 05:30:22,560 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.CombinerOptimizerUtil - Choosing to move algebraic foreach to combiner
+2021-12-03 05:30:22,577 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.SecondaryKeyOptimizerMR - Using Secondary Key Optimization for MapReduce node scope-35
+2021-12-03 05:30:22,588 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 4
+2021-12-03 05:30:22,588 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 4
+2021-12-03 05:30:22,666 [main] INFO  org.apache.hadoop.yarn.client.DefaultNoHARMFailoverProxyProvider - Connecting to ResourceManager at /0.0.0.0:8032
+2021-12-03 05:30:22,859 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+2021-12-03 05:30:22,880 [main] INFO  org.apache.pig.tools.pigstats.mapreduce.MRScriptState - Pig script settings are added to the job
+2021-12-03 05:30:22,896 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.reduce.markreset.buffer.percent is deprecated. Instead, use mapreduce.reduce.markreset.buffer.percent
+2021-12-03 05:30:22,897 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - mapred.job.reduce.markreset.buffer.percent is not set, set to default 0.3
+2021-12-03 05:30:22,900 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+2021-12-03 05:30:22,903 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - This job cannot be converted run in-process
+2021-12-03 05:30:22,925 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.submit.replication is deprecated. Instead, use mapreduce.client.submit.file.replication
+2021-12-03 05:30:23,188 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Added jar file:/usr/local/pig-0.17.0/pig-0.17.0-core-h2.jar to DistributedCache through /tmp/temp1803356968/tmp-396648467/pig-0.17.0-core-h2.jar
+2021-12-03 05:30:23,217 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Added jar file:/usr/local/pig-0.17.0/lib/automaton-1.11-8.jar to DistributedCache through /tmp/temp1803356968/tmp-2042717290/automaton-1.11-8.jar
+2021-12-03 05:30:23,249 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Added jar file:/usr/local/pig-0.17.0/lib/antlr-runtime-3.4.jar to DistributedCache through /tmp/temp1803356968/tmp-656723900/antlr-runtime-3.4.jar
+2021-12-03 05:30:23,283 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Added jar file:/usr/local/pig-0.17.0/lib/joda-time-2.9.3.jar to DistributedCache through /tmp/temp1803356968/tmp2079330368/joda-time-2.9.3.jar
+2021-12-03 05:30:23,303 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.JobControlCompiler - Setting up single store job
+2021-12-03 05:30:23,348 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Key [pig.schematuple] is false, will not generate code.
+2021-12-03 05:30:23,348 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Starting process to move generated code to distributed cacche
+2021-12-03 05:30:23,348 [main] INFO  org.apache.pig.data.SchemaTupleFrontend - Setting key [pig.schematuple.classes] with classes to deserialize []
+2021-12-03 05:30:23,404 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 1 map-reduce job(s) waiting for submission.
+2021-12-03 05:30:23,413 [JobControl] INFO  org.apache.hadoop.yarn.client.DefaultNoHARMFailoverProxyProvider - Connecting to ResourceManager at /0.0.0.0:8032
+2021-12-03 05:30:23,423 [JobControl] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.task.id is deprecated. Instead, use mapreduce.task.attempt.id
+2021-12-03 05:30:23,537 [JobControl] INFO  org.apache.hadoop.mapreduce.JobResourceUploader - Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/root/.staging/job_1638501676387_0015
+2021-12-03 05:30:23,557 [JobControl] WARN  org.apache.hadoop.mapreduce.JobResourceUploader - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+2021-12-03 05:30:23,598 [JobControl] INFO  org.apache.pig.builtin.PigStorage - Using PigTextInputFormat
+2021-12-03 05:30:23,611 [JobControl] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input files to process : 1
+2021-12-03 05:30:23,611 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
+2021-12-03 05:30:23,642 [JobControl] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
+2021-12-03 05:30:23,723 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - number of splits:1
+2021-12-03 05:30:23,829 [JobControl] INFO  org.apache.hadoop.conf.Configuration.deprecation - yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+2021-12-03 05:30:23,920 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Submitting tokens for job: job_1638501676387_0015
+2021-12-03 05:30:23,920 [JobControl] INFO  org.apache.hadoop.mapreduce.JobSubmitter - Executing with tokens: []
+2021-12-03 05:30:24,050 [JobControl] INFO  org.apache.hadoop.mapred.YARNRunner - Job jar is not present. Not adding any jar to the list of resources.
+2021-12-03 05:30:24,113 [JobControl] INFO  org.apache.hadoop.conf.Configuration - resource-types.xml not found
+2021-12-03 05:30:24,113 [JobControl] INFO  org.apache.hadoop.yarn.util.resource.ResourceUtils - Unable to find 'resource-types.xml'.
+2021-12-03 05:30:24,181 [JobControl] INFO  org.apache.hadoop.yarn.client.api.impl.YarnClientImpl - Submitted application application_1638501676387_0015
+2021-12-03 05:30:24,219 [JobControl] INFO  org.apache.hadoop.mapreduce.Job - The url to track the job: http://f57be2ff288d:8088/proxy/application_1638501676387_0015/
+2021-12-03 05:30:24,219 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - HadoopJobId: job_1638501676387_0015
+2021-12-03 05:30:24,219 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Processing aliases inputDialouges
+2021-12-03 05:30:24,219 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - detailed locations: M: inputDialouges[2,17],inputDialouges[-1,-1] C:  R:
+2021-12-03 05:30:24,229 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 0% complete
+2021-12-03 05:30:24,229 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_1638501676387_0015]
+2021-12-03 05:30:33,768 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 12% complete
+2021-12-03 05:30:33,768 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Running jobs are [job_1638501676387_0015]
+2021-12-03 05:30:39,279 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - 25% complete
+2021-12-03 05:30:39,290 [main] INFO  org.apache.hadoop.yarn.client.DefaultNoHARMFailoverProxyProvider - Connecting to ResourceManager at /0.0.0.0:8032
+2021-12-03 05:30:39,303 [main] INFO  org.apache.hadoop.mapred.ClientServiceDelegate - Application state is completed. FinalApplicationStatus=SUCCEEDED. Redirecting to job history server
+2021-12-03 05:30:40,314 [main] INFO  org.apache.hadoop.ipc.Client - Retrying connect to server: 0.0.0.0/0.0.0.0:10020. Already tried 0 time(s); retry policy is RetryUpToMaximumCountWithFixedSleep(maxRetries=10, sleepTime=1000 MILLISECONDS)
+2021-12-03 05:30:41,315 [main] INFO  org.apache.hadoop.ipc.Client - Retrying connect to server: 0.0.0.0/0.0.0.0:10020. Already tried 1 time(s); retry policy is RetryUpToMaximumCountWithFixedSleep(maxRetries=10, sleepTime=1000 MILLISECONDS)
+root@f57be2ff288d:/# hdfs dfs -cat -R /user/root/outputs/episodeIVoutput/part-r-00000
+LUKE    253
+HAN     152
+THREEPIO        119
+BEN     76
+LEIA    57
+VADER   41
+RED LEADER      36
+BIGGS   34
+TARKIN  28
+OWEN    25
+TROOPER 19
+GOLD LEADER     14
+WEDGE   14
+OFFICER 11
+RED TEN 7
+GOLD FIVE       7
+INTERCOM VOICE  6
+FIRST TROOPER   6
+JABBA   6
+AUNT BERU       6
+BEN'S VOICE     6
+DEATH STAR INTERCOM VOICE       6
+DODONNA 6
+GREEDO  6
+TAGGE   4
+MOTTI   4
+HUMAN   4
+SECOND TROOPER  3
+BARTENDER       3
+COMMANDER       3
+VOICE   3
+MASSASSI INTERCOM VOICE 3
+GOLD TWO        2
+WILLARD 2
+GANTRY OFFICER  2
+CHIEF   2
+FIXER   2
+IMPERIAL OFFICER        2
+CAMIE   2
+ASTRO-OFFICER   1
+WINGMAN'S VOICE 1
+WINGMAN 1
+VOICE OVER DEATH STAR INTERCOM  1
+TROOPER VOICE   1
+TECHNICIAN      1
+SECOND OFFICER  1
+RED TEN'S VOICE 1
+RED SEVEN       1
+RED NINE'S VOICE        1
+RED NINE        1
+RED LEADER'S VOICE      1
+RED ELEVEN      1
+REBEL OFFICER   1
+PORKINS 1
+OFFICER CASS    1
+MAN'S VOICE     1
+LUKE'S VOICE    1
+WOMAN   1
+HAN'S VOICE     1
+FIRST OFFICER   1
+DEAK    1
+CREATURE        1
+CONTROL OFFICER 1
+CHIEF PILOT     1
+CAPTAIN 1
+BERU    1
+BASE VOICE      1

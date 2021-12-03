@@ -1,0 +1,342 @@
+-For Episode IV
+
+hive> CREATE TABLE episodeIV (name STRING, line STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+hive> LOAD DATA LOCAL INPATH '/episodeIV_dialouges.txt' INTO TABLE episodeIV;
+
+hive> SELECT name,COUNT(name) AS no_of_lines FROM episodeIV GROUP BY name ORDER BY no_of_lines;
+
+
+
+--For Episode V
+
+hive> CREATE TABLE episodeV (name STRING, line STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+hive> LOAD DATA LOCAL INPATH '/episodeV_dialouges.txt' INTO TABLE episodeV;
+
+hive> SELECT name,COUNT(name) AS no_of_lines FROM episodeV GROUP BY name ORDER BY no_of_lines;
+
+
+--For Episode VI
+
+hive> CREATE TABLE episodeVI (name STRING, line STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+hive> LOAD DATA LOCAL INPATH '/episodeVI_dialouges.txt' INTO TABLE episodeVI;
+
+Hive PowerShell execution for episodeIV
+
+hive> CREATE TABLE episodeIV(name STRING, line STRING)
+    > ROW FORMAT DELIMITED
+    > FIELDS TERMINATED BY '\t'
+    > TBLPROPERTIES ("skip.header.line.count"="2");
+OK
+Time taken: 0.708 seconds
+hive> LOAD DATA LOCAL INPATH '/episodeIV_dialouges.txt' INTO TABLE episodeIV;
+Loading data to table default.episodeiv
+OK
+Time taken: 0.951 seconds
+hive> SELECT name, count(name) AS no_of_lines from episodeIV GROUP BY name ORDER BY no_of_lines;
+Query ID = root_20211203050833_06cbb038-64b0-4772-a666-46008f08c9ad
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1638501676387_0010, Tracking URL = http://f57be2ff288d:8088/proxy/application_1638501676387_0010/
+Kill Command = /usr/local/hadoop/bin/mapred job  -kill job_1638501676387_0010
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2021-12-03 05:08:47,533 Stage-1 map = 0%,  reduce = 0%
+2021-12-03 05:08:53,787 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.46 sec
+2021-12-03 05:09:01,084 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 8.28 sec
+MapReduce Total cumulative CPU time: 8 seconds 280 msec
+Ended Job = job_1638501676387_0010
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1638501676387_0011, Tracking URL = http://f57be2ff288d:8088/proxy/application_1638501676387_0011/
+Kill Command = /usr/local/hadoop/bin/mapred job  -kill job_1638501676387_0011
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2021-12-03 05:09:16,092 Stage-2 map = 0%,  reduce = 0%
+2021-12-03 05:09:22,329 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.48 sec
+2021-12-03 05:09:29,608 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 6.38 sec
+MapReduce Total cumulative CPU time: 6 seconds 380 msec
+Ended Job = job_1638501676387_0011
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 8.28 sec   HDFS Read: 79777 HDFS Write: 2015 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 6.38 sec   HDFS Read: 9535 HDFS Write: 1753 SUCCESS
+Total MapReduce CPU Time Spent: 14 seconds 660 msec
+OK
+ASTRO-OFFICER   1
+WINGMAN'S VOICE 1
+WINGMAN 1
+VOICE OVER DEATH STAR INTERCOM  1
+TROOPER VOICE   1
+TECHNICIAN      1
+SECOND OFFICER  1
+RED TEN'S VOICE 1
+RED SEVEN       1
+RED NINE'S VOICE        1
+RED NINE        1
+RED LEADER'S VOICE      1
+RED ELEVEN      1
+REBEL OFFICER   1
+PORKINS 1
+OFFICER CASS    1
+MAN'S VOICE     1
+LUKE'S VOICE    1
+WOMAN   1
+HAN'S VOICE     1
+FIRST OFFICER   1
+DEAK    1
+CREATURE        1
+CONTROL OFFICER 1
+CHIEF PILOT     1
+CAPTAIN 1
+BERU    1
+BASE VOICE      1
+GOLD TWO        2
+WILLARD 2
+GANTRY OFFICER  2
+CHIEF   2
+FIXER   2
+IMPERIAL OFFICER        2
+CAMIE   2
+SECOND TROOPER  3
+BARTENDER       3
+COMMANDER       3
+VOICE   3
+MASSASSI INTERCOM VOICE 3
+TAGGE   4
+MOTTI   4
+HUMAN   4
+DODONNA 6
+GREEDO  6
+INTERCOM VOICE  6
+FIRST TROOPER   6
+JABBA   6
+AUNT BERU       6
+BEN'S VOICE     6
+DEATH STAR INTERCOM VOICE       6
+RED TEN 7
+GOLD FIVE       7
+OFFICER 11
+WEDGE   14
+GOLD LEADER     14
+TROOPER 19
+OWEN    25
+TARKIN  28
+BIGGS   34
+RED LEADER      36
+VADER   41
+LEIA    57
+BEN     76
+THREEPIO        119
+HAN     152
+LUKE    253
+Time taken: 56.973 seconds, Fetched: 67 row(s)
+hive> INSERT OVERWRITE DIRECTORY '/user/root/output/export'
+    > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    > SELECT name, count(name) AS no_of_lines from episodeIV GROUP BY name ORDER BY no_of_lines;
+Query ID = root_20211203051504_74aff20e-0eca-4c32-b52d-792e97d0c0bd
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1638501676387_0012, Tracking URL = http://f57be2ff288d:8088/proxy/application_1638501676387_0012/
+Kill Command = /usr/local/hadoop/bin/mapred job  -kill job_1638501676387_0012
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2021-12-03 05:15:17,280 Stage-1 map = 0%,  reduce = 0%
+2021-12-03 05:15:25,740 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 6.04 sec
+2021-12-03 05:15:34,126 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 10.79 sec
+MapReduce Total cumulative CPU time: 10 seconds 790 msec
+Ended Job = job_1638501676387_0012
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1638501676387_0013, Tracking URL = http://f57be2ff288d:8088/proxy/application_1638501676387_0013/
+Kill Command = /usr/local/hadoop/bin/mapred job  -kill job_1638501676387_0013
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2021-12-03 05:15:52,143 Stage-2 map = 0%,  reduce = 0%
+2021-12-03 05:15:58,367 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.64 sec
+2021-12-03 05:16:05,708 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 6.24 sec
+MapReduce Total cumulative CPU time: 6 seconds 240 msec
+Ended Job = job_1638501676387_0013
+Moving data to directory /user/root/output/export
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 10.79 sec   HDFS Read: 79889 HDFS Write: 2015 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 6.24 sec   HDFS Read: 9125 HDFS Write: 862 SUCCESS
+Total MapReduce CPU Time Spent: 17 seconds 30 msec
+OK
+Time taken: 61.913 seconds
+hive> dfs -ls /user/root/output/
+    > dfs -ls /user/root/output/;
+ls: `/user/root/output/
+ls: `-ls': No such file or directory
+Found 1 items
+drwxr-xr-x   - root supergroup          0 2021-12-03 05:16 /user/root/output/export
+Command -ls /user/root/output/
+dfs -ls /user/root/output/ failed with exit code = 1
+Query returned non-zero code: 1, cause: null
+hive> dfs -ls /user/root/output/export;
+Found 1 items
+-rw-r--r--   1 root supergroup        862 2021-12-03 05:16 /user/root/output/export/000000_0
+hive> dfs -cat /user/root/output/export/000000_0;
+ASTRO-OFFICER,1
+WINGMAN'S VOICE,1
+WINGMAN,1
+VOICE OVER DEATH STAR INTERCOM,1
+TROOPER VOICE,1
+TECHNICIAN,1
+SECOND OFFICER,1
+RED TEN'S VOICE,1
+RED SEVEN,1
+RED NINE'S VOICE,1
+RED NINE,1
+RED LEADER'S VOICE,1
+RED ELEVEN,1
+REBEL OFFICER,1
+PORKINS,1
+OFFICER CASS,1
+MAN'S VOICE,1
+LUKE'S VOICE,1
+WOMAN,1
+HAN'S VOICE,1
+FIRST OFFICER,1
+DEAK,1
+CREATURE,1
+CONTROL OFFICER,1
+CHIEF PILOT,1
+CAPTAIN,1
+BERU,1
+BASE VOICE,1
+GOLD TWO,2
+WILLARD,2
+GANTRY OFFICER,2
+CHIEF,2
+FIXER,2
+IMPERIAL OFFICER,2
+CAMIE,2
+SECOND TROOPER,3
+BARTENDER,3
+COMMANDER,3
+VOICE,3
+MASSASSI INTERCOM VOICE,3
+TAGGE,4
+MOTTI,4
+HUMAN,4
+DODONNA,6
+GREEDO,6
+INTERCOM VOICE,6
+FIRST TROOPER,6
+JABBA,6
+AUNT BERU,6
+BEN'S VOICE,6
+DEATH STAR INTERCOM VOICE,6
+RED TEN,7
+GOLD FIVE,7
+OFFICER,11
+WEDGE,14
+GOLD LEADER,14
+TROOPER,19
+OWEN,25
+TARKIN,28
+BIGGS,34
+RED LEADER,36
+VADER,41
+LEIA,57
+BEN,76
+THREEPIO,119
+HAN,152
+LUKE,253
+hive> exit;
+root@f57be2ff288d:/# hdfs dfs -ls /user/root/output/export/
+Found 1 items
+-rw-r--r--   1 root supergroup        862 2021-12-03 05:16 /user/root/output/export/000000_0
+root@f57be2ff288d:/# hdfs dfs -cat /user/root/output/export/000000_0
+ASTRO-OFFICER,1
+WINGMAN'S VOICE,1
+WINGMAN,1
+VOICE OVER DEATH STAR INTERCOM,1
+TROOPER VOICE,1
+TECHNICIAN,1
+SECOND OFFICER,1
+RED TEN'S VOICE,1
+RED SEVEN,1
+RED NINE'S VOICE,1
+RED NINE,1
+RED LEADER'S VOICE,1
+RED ELEVEN,1
+REBEL OFFICER,1
+PORKINS,1
+OFFICER CASS,1
+MAN'S VOICE,1
+LUKE'S VOICE,1
+WOMAN,1
+HAN'S VOICE,1
+FIRST OFFICER,1
+DEAK,1
+CREATURE,1
+CONTROL OFFICER,1
+CHIEF PILOT,1
+CAPTAIN,1
+BERU,1
+BASE VOICE,1
+GOLD TWO,2
+WILLARD,2
+GANTRY OFFICER,2
+CHIEF,2
+FIXER,2
+IMPERIAL OFFICER,2
+CAMIE,2
+SECOND TROOPER,3
+BARTENDER,3
+COMMANDER,3
+VOICE,3
+MASSASSI INTERCOM VOICE,3
+TAGGE,4
+MOTTI,4
+HUMAN,4
+DODONNA,6
+GREEDO,6
+INTERCOM VOICE,6
+FIRST TROOPER,6
+JABBA,6
+AUNT BERU,6
+BEN'S VOICE,6
+DEATH STAR INTERCOM VOICE,6
+RED TEN,7
+GOLD FIVE,7
+OFFICER,11
+WEDGE,14
+GOLD LEADER,14
+TROOPER,19
+OWEN,25
+TARKIN,28
+BIGGS,34
+RED LEADER,36
+VADER,41
+LEIA,57
+BEN,76
+THREEPIO,119
+HAN,152
+LUKE,253
+root@f57be2ff288d:/#
